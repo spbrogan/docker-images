@@ -7,7 +7,7 @@ RUN rpm --import "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3FA7E0
 
 # install tools
 RUN dnf -y update && \
-    dnf -y groupinstall development-tools && \ 
+    dnf -y groupinstall development-tools && \
     dnf -y install git gcc gcc-c++ python3.8 python3-pip libuuid-devel mono-devel && \
     dnf clean all
 
@@ -17,9 +17,8 @@ RUN pip3 install --upgrade edk2-pytool-extensions
 # Setup Omnicache for dev work
 ENV OMNICACHE_PATH=/opt/src/omnicache
 RUN echo 'alias gcl="git clone --reference ${OMNICACHE_PATH}"' >> ~/.bashrc
-RUN omnicache -a edk2_upstream https://github.com/tianocore/edk2 -a openssl https://github.com/openssl/openssl.git true -a softfloat https://github.com/ucb-bar/berkeley-softfloat-3.git --init ${OMNICACHE_PATH} && \
-    omnicache -a cmocka https://git.cryptomilk.org/projects/cmocka.git --init ${OMNICACHE_PATH}
-
+RUN omnicache -a edk2_upstream https://github.com/tianocore/edk2 -a openssl https://github.com/openssl/openssl.git true -a softfloat https://github.com/ucb-bar/berkeley-softfloat-3.git \
+    -a cmocka https://git.cryptomilk.org/projects/cmocka.git --init ${OMNICACHE_PATH}
 
 # WELCOME TO Project Mu Linux Build and Test container for UEFI!!
 #   The suggested process is as follows:
@@ -34,6 +33,4 @@ RUN omnicache -a edk2_upstream https://github.com/tianocore/edk2 -a openssl http
 #      c. build base tools BaseTools/Edk2BaseToolsBuild.py
 #      d. stuart_ci_build -c .pytool/CISettings.py TOOL_CHAIN_TAG=GCC5 -a X64
 
-
-
-
+ENTRYPOINT ["/bin/bash"]
